@@ -20,7 +20,7 @@ const double Pc = 0.9, Pm = 0.07;   //
 
 
 double trace[1][maxn];//trace[x][y]在第y个波形里  第x个点的值
-int HD_key[maxn];//HW_key为猜测密钥的中间值的汉明重量 
+int HD_key[maxn];
 
 struct PlainData {//plain文件里的内容  res是密文
 	unsigned char key[16], plain[16], res[16];
@@ -48,20 +48,20 @@ const unsigned char S_Table[16][16] =
 };
 
 
-//16进制转换为10进制
+
 inline int HextoDec(char ch) {
 	if (isdigit(ch))return ch - '0';
 	return ch - 'A' + 10;
 }
 
-//16进制字符串转 16个int  每个int表示一个字节
+
 void strtobyte(const char* s, unsigned char res[], int n) {
 	for (int i = 0; i < n; i++) {
 		res[i] = (HextoDec(s[i * 2]) << 4) + HextoDec(s[i * 2 + 1]);
 	}
 }
 
-//计算相关性
+
 double corr(int x[], double y[], int n) {
 	double ex = 0, ey = 0;
 
@@ -98,9 +98,9 @@ double corr(int x[], double y[], int n) {
 	return ans;
 }
 
-//计算x  y汉明距离
+
 int f[256];
-int calc_HD(int x, int y) {//计算x  y汉明距离
+int calc_HD(int x, int y) {
 	x ^= y;
 	if (f[x])return f[x];
 	int t = x;
@@ -113,7 +113,7 @@ int calc_HD(int x, int y) {//计算x  y汉明距离
 }
 
 
-int dis(const unsigned char* s1, const unsigned char* s2) { //密钥与正确密钥差几个半字节
+int dis(const unsigned char* s1, const unsigned char* s2) { 
 	int cnt = 0;
 	for (int i = 0; i < 16; i++)
 		cnt += calc_HD(s1[i], s2[i]);
@@ -188,8 +188,6 @@ void PrintData(int i, string dir, int n, PlainData Data[], double trace[][maxn],
 	fclose(fp);
 }
 
-
-
 double calc_corr1(unsigned char key[], int trace_num, PlainData Data[], int HD_key[], double trace[][maxn]) {   //fitness function
 	double corr1;
 	for (int i = 2; i <= trace_num; i++) {
@@ -227,7 +225,7 @@ void creat_node(node w[], int n, int trace_num, PlainData Data[], int HD_key[], 
 }
 
 
-//单点交叉
+
 void crossover_singlePoint_tournament(node w[]) {
 	//if (rand() % 10 >= 5)
 	//	swap(a, b);
@@ -276,7 +274,7 @@ void mutation_singleBit_tournament(node& x) {
 	for (int i = 0; i < 16; i++) {
 		if (rand() < Pm * RAND_MAX) {
 			int index = rand() % 8;
-			x.key[i] ^= (1 << index);   //按位异或实现i字节j位的基因突变
+			x.key[i] ^= (1 << index);   
 		}
 	}
 }
@@ -327,7 +325,7 @@ void GA(unsigned char* key, int trace_num, int pn, int evolution_max, int pn_tou
 	
 	int count = 0, count_2 = 0, count_fail = 0;
 	int fail_num = 0;
-	int k, k_2 = 0;//实验次数
+	int k, k_2 = 0;
 
 	int start_trace_set[200 + 5];
 	FILE* fp_crt; //ChooseRandomTraces
@@ -349,12 +347,12 @@ void GA(unsigned char* key, int trace_num, int pn, int evolution_max, int pn_tou
 
 	node w[max_I], w_tmp[max_I];
 	PlainData Data[maxn];
-	double trace[1][maxn];//trace[x][y]在第y个波形里  第x个点的值
+	double trace[1][maxn];
 	int HD_key[maxn];
 
 
-	for (k = 1; k <= experiment_max; k++) {  //进行50次实验
-		//srand(time(0));  //把当前的时间作为随机数种子
+	for (k = 1; k <= experiment_max; k++) {  
+		//srand(time(0));  
 
 		int start_trace = start_trace_set[k];
 
@@ -387,10 +385,10 @@ void GA(unsigned char* key, int trace_num, int pn, int evolution_max, int pn_tou
 
 			//printf("%lf  %lf  %lf  %lf  ", correct.corr, best.corr, w[1].corr, w[2].corr);
 			//for (int j = 0; j < 16; j++) {
-			//	printf("%02X", best.key[j]);  //%02X输出为16进制数
+			//	printf("%02X", best.key[j]);  
 			//	HD += calc_HD(Data[1].key[j], best.key[j]);
 			//}
-			//printf(" %d\n", dis(best.key, Data[1].key));//比较正确密钥和当前密钥x.key差几比特
+			//printf(" %d\n", dis(best.key, Data[1].key));
 
 		}
 		memcpy(key, best.key, 16);
@@ -479,7 +477,7 @@ int main() {
 
 		for (int i = trace_number_min; i <= trace_number_max; i += trace_number_step) {
 
-			const int n = i;////n表示生成的波形数量，读取n次加密结果
+			const int n = i;
 			unsigned char best_key[16];
 			printf("Trace number is %d\n", n);
 
