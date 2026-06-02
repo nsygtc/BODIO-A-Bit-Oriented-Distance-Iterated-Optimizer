@@ -95,15 +95,11 @@ If you use this repository or find this work helpful, please cite our paper:
 
 ## License
 
-The source code in this repository is released under the license specified in the `LICENSE` file.
+The source code in this repository is released under the **MIT License**.
 
-Please note that the copyright of the published article belongs to Elsevier B.V. The article should be accessed through the official DOI or Elsevier Share Link.
+See the [LICENSE](LICENSE) file for details.
 
----
-
-## Acknowledgements
-
-We thank the reviewers and editors of *Applied Soft Computing* for their constructive comments.
+Please note that the MIT License applies only to the source code in this repository. The published article is copyrighted by Elsevier B.V. and should be accessed through the official DOI or Elsevier Share Link.
 
 ---
 
