@@ -1,7 +1,3 @@
-﻿/*
-1）          C语言中六种位运算符：
-&按位与   |按位或   ^按位异或    ~取反    <<左移    >>右移
-*/
 #include<bits/stdc++.h>
 #include <random>  
 #include <iostream>
@@ -20,7 +16,7 @@ typedef pair<LL, LL>pLL;
 
 const int maxn = 2000 + 5;
 const int max_I = 2e4 + 5;
-const double Pc = 0.9, Pm = 0.07;   //Pc为交叉率  Pm为突变率，调整到0.03则在种群1000，波形1300时不会收敛 0.02则收敛变慢
+const double Pc = 0.9, Pm = 0.07;   //
 
 
 double trace[1][maxn];//trace[x][y]在第y个波形里  第x个点的值
@@ -129,7 +125,7 @@ int calc_HW(int x) {
 	int ans = 0;
 	while (x) {
 		ans++;
-		x -= x & -x;  //把x最低位变为0   二进制x的负数 -x = 原码 x 求反 得反码，反码+1为补码，即为-x  正负相与 
+		x -= x & -x;  
 	}
 	return ans;
 }
@@ -149,7 +145,7 @@ string currentTimetoStr() {
 	return string(tmp);
 }
 
-//创建文件夹
+
 void CreateFolder(const string& directoryPath)
 {
 	string cmd_mkdir = "mkdir -p ";
@@ -157,41 +153,11 @@ void CreateFolder(const string& directoryPath)
 	system(cmd_mkdir.c_str());
 }
 
-//调用数据
+//invoke data (note: you should use your own real data)
 void InvokeData(PlainData Data[], double trace[][maxn], int trace_num, int start_trace) {
-	int skip_num = start_trace - 1;
-	FILE* fp;
-	fp = fopen("./Plaintext.csv", "r");
-	for (int i = 1; i <= skip_num; i++) {
-		char s[50];
-		fscanf(fp, "%s", s);
-		fscanf(fp, "%s", s);
-		fscanf(fp, "%s", s);
-		fscanf(fp, "%s", s);  //读入掩码
-		fscanf(fp, "%s", s);
-	}
-
-	for (int i = 1; i <= trace_num; i++) {
-		char s[50];
-		fscanf(fp, "%s", s);
-		fscanf(fp, "%s", s);
-		strtobyte(s, Data[i].key, 16);
-		fscanf(fp, "%s", s);
-		strtobyte(s, Data[i].plain, 16);
-		fscanf(fp, "%s", s);  //读入掩码
-		fscanf(fp, "%s", s);
-		strtobyte(s, Data[i].res, 16);
-	}
-	fclose(fp);
-
-	fp = fopen("./trace_433_average.csv", "r");
-	for (int i = 1; i <= skip_num; i++) {
-		double tmp;
-		fscanf(fp, "%lf", &tmp);
-	}
-	for (int i = 1; i <= trace_num; i++)
-		fscanf(fp, "%lf", &trace[0][i]);
-	fclose(fp);
+	'''
+	Use your own data
+	'''
 }
 
 void PrintData(int i, string dir, int n, PlainData Data[], double trace[][maxn], int start_trace) {
@@ -206,15 +172,15 @@ void PrintData(int i, string dir, int n, PlainData Data[], double trace[][maxn],
 		fprintf(fp, "%lf,", trace[0][i]);
 
 		for (int j = 0; j < 15; j++) {
-			fprintf(fp, "%02X ", Data[i].plain[j]);//明文
+			fprintf(fp, "%02X ", Data[i].plain[j]);//plaintext
 		}
 		fprintf(fp, "%02X,", Data[i].plain[15]);
 		for (int j = 0; j < 15; j++) {
-			fprintf(fp, "%02X ", Data[i].key[j]);//密钥
+			fprintf(fp, "%02X ", Data[i].key[j]);//key
 		}
 		fprintf(fp, "%02X,", Data[i].key[15]);
 		for (int j = 0; j < 15; j++) {
-			fprintf(fp, "%02X ", Data[i].res[j]);//密文
+			fprintf(fp, "%02X ", Data[i].res[j]);//ciphertext
 		}
 		fprintf(fp, "%02X,", Data[i].res[15]);
 		fprintf(fp, "\n");
@@ -237,7 +203,7 @@ double calc_corr1(unsigned char key[], int trace_num, PlainData Data[], int HD_k
 	return corr1;
 }
 
-//种群个体node
+
 struct node {
 	unsigned char key[16];
 	double corr;
@@ -247,14 +213,8 @@ struct node {
 };
 
 void creat_node(node w[], int n, int trace_num, PlainData Data[], int HD_key[], double trace[][maxn]) {
-	//char s[] = "0123456799ABCDEFFEDCBA9876543210";
-	//strtobyte(s, w[1].key, 16);
-	/*for (int i = 0; i < 16; i++) {
-		w[1].key[i] = Data[1].key[i];
-	}
-	w[1].corr = calc_corr1(w[1].key);*/
-	//w[1].corr = calc_corr2(w[1].key);
-	//printf("正确密钥的相关系数为 %lf \n", w[1].corr);
+
+
 	for (int i = 1; i <= n; i++) {
 		for (int j = 0; j < 16; j++) {
 			w[i].key[j] = rand() % 256;
@@ -262,8 +222,8 @@ void creat_node(node w[], int n, int trace_num, PlainData Data[], int HD_key[], 
 		w[i].corr = calc_corr1(w[i].key, trace_num, Data, HD_key, trace);   //fitness function
 	}
 
-	sort(w + 1, w + 1 + n);  //调用node结构体里的operator < 进行排序
-	//printf("排序后第一个密钥的相关系数为 %lf  %lf  %lf\n", w[1].corr, w[2].corr, w[3].corr);
+	sort(w + 1, w + 1 + n);  
+
 }
 
 
@@ -357,7 +317,6 @@ void work_GA_tournament(int trace_num, int pn, int evolution_max, node w[], node
 	sort(w + 1, w + 1 + pn);
 }
 
-//void GA(unsigned char* key, int trace_num, string start, int pn, int evolution_max, int pn_tournament, int experiment_max, FILE* fp1, string dir) {
 void GA(unsigned char* key, int trace_num, int pn, int evolution_max, int pn_tournament, int experiment_max, FILE* fp1, string dir) {
 	
 	vector<double> runtimes(experiment_max);
