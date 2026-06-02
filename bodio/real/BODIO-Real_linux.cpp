@@ -1,4 +1,3 @@
-﻿//#include "uTools.h"
 #include "HybridTools_real_linux.h"
 #include <sys/time.h>
 
@@ -35,8 +34,8 @@ void bGWO(unsigned char* key, int trace_num, string start, int pn, int evolution
 	double trace[1][maxn];//trace[x][y]在第y个波形里  第x个点的值
 	int HD_key[maxn];
 
-	for (k = 1; k <= experiment_max; k++) {  //进行k次实验
-		//srand(time(0));  //把当前的时间作为随机数种子
+	for (k = 1; k <= experiment_max; k++) {  
+		//srand(time(0));  
 
 		int start_trace = start_trace_set[k];
 
@@ -86,9 +85,9 @@ void bGWO(unsigned char* key, int trace_num, string start, int pn, int evolution
 
 			//printf("%lf  %lf  %lf  %f  %f ", correct.corr, w[1].corr, w[2].corr, w[3].corr, w[4].corr);
 			//for (int j = 0; j < 16; j++) {
-			//	printf("%02X", alpha.key[j]);  //%02X输出为16进制数
+			//	printf("%02X", alpha.key[j]);  
 			//}
-			//printf(" %d\n", dis(alpha.key, Data[1].key));//比较正确密钥和当前密钥x.key差几比特*/
+			//printf(" %d\n", dis(alpha.key, Data[1].key));
 
 		}
 		memcpy(key, alpha.key, 16);
@@ -176,7 +175,7 @@ void bGWO(unsigned char* key, int trace_num, string start, int pn, int evolution
 
 }
 
-//vector<int> pn_set = { 3, 4, 5, 6, 7, 8 }; 
+
 vector<int> pn_set = { 4, 5, 6, 7, 8 };
 
 int main() {
