@@ -1,0 +1,40 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the associated paper."
+type: software
+title: "BODIO: A Bit-Oriented Distance-Iterated Optimizer for Key Search with Bitwise Linear Leakage"
+authors:
+
+* family-names: Gao
+  given-names: Ting
+* family-names: Chen
+  given-names: Xuyang
+* family-names: Liu
+  given-names: Yuanxing
+* family-names: Wang
+  given-names: An
+
+repository-code: "https://github.com/nsygtc/BODIO-A-Bit-Oriented-Distance-Iterated-Optimizer"
+url: "https://github.com/nsygtc/BODIO-A-Bit-Oriented-Distance-Iterated-Optimizer"
+license: MIT
+year: 2026
+
+preferred-citation:
+type: article
+title: "BODIO: A bit-oriented distance-iterated optimizer for key search with bitwise linear leakage"
+authors:
+- family-names: Gao
+given-names: Ting
+- family-names: Chen
+given-names: Xuyang
+- family-names: Liu
+given-names: Yuanxing
+- family-names: Wang
+given-names: An
+journal: "Applied Soft Computing"
+volume: 201
+pages: "115531"
+year: 2026
+publisher:
+name: "Elsevier"
+doi: "10.1016/j.asoc.2026.115531"
+url: "https://doi.org/10.1016/j.asoc.2026.115531"
