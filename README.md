@@ -32,7 +32,6 @@ The optimizer is inspired by the binary Grey Wolf Optimizer and is redesigned fo
 
 * **Bit-oriented optimization** for key search under bitwise linear leakage.
 * **Distance-iterated population update** inspired by binary Grey Wolf Optimization.
-* **Hierarchical guidance** using multiple leader candidates.
 * **Individual diversifier** to reduce premature convergence and maintain population diversity.
 * **One-bit-flip** for local search after dynamic convergence.
 * **Simulation and FPGA experiment support**, depending on available data.
