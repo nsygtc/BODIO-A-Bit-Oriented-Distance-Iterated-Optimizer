@@ -50,8 +50,6 @@ BODIO/
 │   ├── optimizer.py
 ```
 
-You may adjust the structure according to your own implementation.
-
 ---
 
 ## Data
@@ -73,17 +71,6 @@ If you use this repository or find this work helpful, please cite our paper:
   publisher={Elsevier}
 }
 ```
-
----
-
-## Paper Access
-
-The official published article is available through Elsevier:
-
-* DOI: https://doi.org/10.1016/j.asoc.2026.115531
-* Elsevier Share Link: https://authors.elsevier.com/a/1nB4F5aecT0-B6
-
-This repository does not host the published journal article PDF. Please use the official DOI or Elsevier Share Link to access the paper.
 
 ---
 
