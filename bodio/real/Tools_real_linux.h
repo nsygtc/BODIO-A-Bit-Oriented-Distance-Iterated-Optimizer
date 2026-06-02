@@ -1,7 +1,3 @@
-/*
-1）C语言中六种位运算符：
-&按位与   |按位或   ^按位异或    ~取反    <<左移    >>右移
-*/
 #include<bits/stdc++.h>
 #include <stdint.h>
 #include <random>  
@@ -21,7 +17,7 @@ const int max_I = 2e4 + 5;
 const int maxn = 2000 + 5;
 
 
-struct PlainData {//plain文件里的内容  res是密文
+struct PlainData {
 	unsigned char key[16], plain[16], res[16];
 };
 
@@ -68,13 +64,13 @@ const unsigned char S_Table[16][16] =
 };
 
 
-//16进制转换为10进制
+
 inline int HextoDec(char ch) {
 	if (isdigit(ch))return ch - '0';
 	return ch - 'A' + 10;
 }
 
-//16进制字符串转 16个int  每个int表示一个字节
+
 void strtobyte(const char* s, unsigned char res[], int n) {
 	for (int i = 0; i < n; i++) {
 		res[i] = (HextoDec(s[i * 2]) << 4) + HextoDec(s[i * 2 + 1]);
@@ -120,7 +116,7 @@ double corr(int x[], double y[], int n) {
 
 //计算汉明距离
 int f[256];
-int calc_HD(int x, int y) {//计算x  y汉明距离
+int calc_HD(int x, int y) {
 	x ^= y;
 	if (f[x])return f[x];
 	int t = x;
@@ -133,7 +129,7 @@ int calc_HD(int x, int y) {//计算x  y汉明距离
 }
 
 
-int dis(const unsigned char* s1, const unsigned char* s2) { //密钥与正确密钥差多少比特
+int dis(const unsigned char* s1, const unsigned char* s2) { 
 	int cnt = 0;
 	for (int i = 0; i < 16; i++)
 		cnt += calc_HD(s1[i], s2[i]);
@@ -147,7 +143,7 @@ int cmp_equal(int x, int y) {//计算x和y是否相等
 		return 1;
 }
 
-int dis_byte(const unsigned char* s1, const unsigned char* s2) { //密钥与正确密钥差几个字节
+int dis_byte(const unsigned char* s1, const unsigned char* s2) { 
 	int cnt = 0;
 	for (int i = 0; i < 16; i++)
 		cnt += cmp_equal(s1[i], s2[i]);
@@ -161,7 +157,7 @@ int calc_HW(int x) {
 	int ans = 0;
 	while (x) {
 		ans++;
-		x -= x & -x;  //把x最低位变为0   二进制x的负数 -x = 原码 x 求反 得反码，反码+1为补码，即为-x  正负相与 
+		x -= x & -x; 
 	}
 	return ans;
 }
@@ -190,41 +186,11 @@ string currentTimetoStr() {
 }
 
 
-//调用数据
+//Note: you should use your own data here
 void InvokeData(PlainData Data[], double trace[][maxn], int trace_num, int start_trace) {
-	int skip_num = start_trace - 1;
-	FILE* fp;
-	fp = fopen("./Plaintext.csv", "r");
-	for (int i = 1; i <= skip_num; i++) {
-		char s[50];
-		fscanf(fp, "%s", s);
-		fscanf(fp, "%s", s);
-		fscanf(fp, "%s", s);
-		fscanf(fp, "%s", s);  //读入掩码
-		fscanf(fp, "%s", s);
-	}
-
-	for (int i = 1; i <= trace_num; i++) {
-		char s[50];
-		fscanf(fp, "%s", s);
-		fscanf(fp, "%s", s);
-		strtobyte(s, Data[i].key, 16);
-		fscanf(fp, "%s", s);
-		strtobyte(s, Data[i].plain, 16);
-		fscanf(fp, "%s", s);  //读入掩码
-		fscanf(fp, "%s", s);
-		strtobyte(s, Data[i].res, 16);
-	}
-	fclose(fp);
-
-	fp = fopen("./trace_433_average.csv", "r");
-	for (int i = 1; i <= skip_num; i++) {
-		double tmp;
-		fscanf(fp, "%lf", &tmp);
-	}
-	for (int i = 1; i <= trace_num; i++)
-		fscanf(fp, "%lf", &trace[0][i]);
-	fclose(fp);
+	'''
+	Use your own data
+	'''
 }
 
 void PrintData(int i, string dir, int n, PlainData Data[], double trace[][maxn], int start_trace) {
@@ -238,15 +204,15 @@ void PrintData(int i, string dir, int n, PlainData Data[], double trace[][maxn],
 		fprintf(fp, "%lf,", trace[0][i]);
 
 		for (int j = 0; j < 15; j++) {
-			fprintf(fp, "%02X ", Data[i].plain[j]);//明文
+			fprintf(fp, "%02X ", Data[i].plain[j]);//plaintext
 		}
 		fprintf(fp, "%02X,", Data[i].plain[15]);
 		for (int j = 0; j < 15; j++) {
-			fprintf(fp, "%02X ", Data[i].key[j]);//密钥
+			fprintf(fp, "%02X ", Data[i].key[j]);//key
 		}
 		fprintf(fp, "%02X,", Data[i].key[15]);
 		for (int j = 0; j < 15; j++) {
-			fprintf(fp, "%02X ", Data[i].res[j]);//密文
+			fprintf(fp, "%02X ", Data[i].res[j]);//ciphertext
 		}
 		fprintf(fp, "%02X,", Data[i].res[15]);
 		fprintf(fp, "\n");
@@ -268,14 +234,7 @@ double calc_corr_SboxPre(unsigned char key[], int trace_num, PlainData Data[], i
 }
 
 void creat_node(node w[], int pn, int trace_num, PlainData Data[], int HD_key[], double trace[][maxn]) {
-	//char s[] = "0123456799ABCDEFFEDCBA9876543210";
-	//strtobyte(s, w[1].key, 16);
-	/*for (int i = 0; i < 16; i++) {
-		w[1].key[i] = Data[1].key[i];
-	}
-	w[1].corr = calc_corr_SboxPre(w[1].key, trace_num, Data, HW_key, trace);*/
-	//w[1].corr = calc_corr2(w[1].key);
-	//printf("正确密钥的相关系数为 %lf \n", w[1].corr);
+
 	for (int i = 1; i <= pn; i++) {
 		for (int j = 0; j < 16; j++) {
 			w[i].key[j] = rand() % 256;
@@ -284,7 +243,7 @@ void creat_node(node w[], int pn, int trace_num, PlainData Data[], int HD_key[],
 	}
 
 	sort(w + 1, w + 1 + pn);  //调用node结构体里的operator < 进行排序
-	//printf("排序后第一个密钥的相关系数为 %lf  %lf  %lf\n", w[1].corr, w[2].corr, w[3].corr);
+
 }
 
 double C_method() {
@@ -486,7 +445,6 @@ void update_omega(node w[], int pn, Parameters para, int evolution_max, int iter
 				alpha.set(j);
 		}
 	}
-	//cout << alpha << endl;
 
 	for (int i = 0; i < 16; i++) {
 		bitset<8> tmp(w[2].key[i]);
@@ -530,7 +488,7 @@ void update_omega(node w[], int pn, Parameters para, int evolution_max, int iter
 			X3[j] = fabs((double)delta[j] - para.A3 * d_delta[j]);
 
 			double r_sigmoid = (double)rand() / (double)RAND_MAX;
-			X[j] = (X1[j] * 0.6 + X2[j] * 0.3 + X3[j] * 0.1);  // 平均 /  5 3 2
+			X[j] = (X1[j] * 0.6 + X2[j] * 0.3 + X3[j] * 0.1);  
 			double result = 1 / (1 + exp(-10 * X[j] + 5));
 			if (result >= r_sigmoid) {
 				omega_tmp.set(j);
@@ -550,147 +508,17 @@ void update_omega(node w[], int pn, Parameters para, int evolution_max, int iter
 			//w[i].key[j] = tmp.to_ulong();
 		}
 		w_tmp.corr = calc_corr_SboxPre(w_tmp.key, trace_num, Data, HD_key, trace);
-		//w[i].corr = calc_corr_SboxPre(w[i].key, trace_num, Data, HW_key, trace);
 
-		/*double r_compare = (double)rand() / (double)RAND_MAX;
-
-		if (((double)iter_num / (double)evolution_max) <= 0.8) {   //进化前期
-			if (w[i].corr < w_tmp.corr && r_compare < 0.8) {
-				memcpy(w[i].key, w_tmp.key, 16);
-				w[i].corr = w_tmp.corr;
-			}
-		}
-		else {   //进化后期
-			if (r_compare < 0.8) {
-				memcpy(w[i].key, w_tmp.key, 16);
-				w[i].corr = w_tmp.corr;
-			}
-		}*/
-		//if (w[i].corr < w_tmp.corr) {// && r_compare < 0.8
-			memcpy(w[i].key, w_tmp.key, 16);
-			w[i].corr = w_tmp.corr;
-		//}
+		memcpy(w[i].key, w_tmp.key, 16);
+		w[i].corr = w_tmp.corr;
 	}
 	sort(w + 1, w + 1 + pn);
 	reduce_duplication(w, pn, evolution_max, iter_num, trace_num, Data, HD_key, trace, para_dup);
 }
 
-void update_omega_second(node w[], int pn, Parameters_second para_2, int evolution_max, int iter_num, int trace_num, PlainData Data[], int HD_key[], double trace[][maxn], Paras_duplication para_dup) {
-	bitset<128> alpha, beta, delta, omega, omega_tmp, final;
-	double d[128], X[128];
-
-	for (int i = 0; i < 16; i++) {
-		bitset<8> tmp(w[1].key[i]);
-		//cout << tmp << endl;
-		for (int j = i * 8; j < (i + 1) * 8; j++) {
-			if (tmp[j % 8] == 1)
-				alpha.set(j);
-		}
-	}
-	//cout << alpha << endl;
-
-	for (int i = 0; i < 16; i++) {
-		bitset<8> tmp(w[2].key[i]);
-		//cout << tmp << endl;
-		for (int j = i * 8; j < (i + 1) * 8; j++) {
-			if (tmp[j % 8] == 1)
-				beta.set(j);
-		}
-	}
-
-	for (int i = 0; i < 16; i++) {
-		bitset<8> tmp(w[3].key[i]);
-		//cout << tmp << endl;
-		for (int j = i * 8; j < (i + 1) * 8; j++) {
-			if (tmp[j % 8] == 1)
-				delta.set(j);
-		}
-	}
-
-	for (int i = 1; i <= pn; i++) {
-
-		for (int j = 0; j < 16; j++) {
-			bitset<8> tmp(w[i].key[j]);
-			//cout << tmp << endl;
-			for (int k = j * 8; k < (j + 1) * 8; k++) {
-				if (tmp[k % 8] == 1)
-					omega.set(j);
-			}
-		}
-
-		//double Pc = 0.8;
-		for (int j = 0; j < 128; j++) {
-			//变异
-			para_2 = update_parameters_second(para_2, evolution_max, iter_num);
-			if (rand() % 10 >= 5) {
-				int tmp = delta[j];
-				delta[j] = beta[j];
-				beta[j] = tmp;
-			}
-
-			d[j] = fabs(para_2.C * (double)beta[j] - (double)delta[j]);
-			X[j] = fabs((double)alpha[j] - para_2.A * d[j]);
-			double r_sigmoid = (double)rand() / (double)RAND_MAX;
-			double result = 1 / (1 + exp(-10 * X[j] + 5));
-			if (result >= r_sigmoid) {
-				omega_tmp.set(j);
-			}
-			/*
-			//交叉
-			double r_crossover = (double)rand() / (double)RAND_MAX;  // rand()����[0, RAND_MAX]֮��������
-
-			int r_dimension = rand() % 128;
-			if (r_crossover < Pc || j == r_dimension) {
-				final[j] = omega_tmp[j];
-			}
-			else
-			{
-				final[j] = omega[j];
-			}*/
-		}
-
-		node w_tmp;
-		w_tmp.corr = 0;
-		for (int j = 0; j < 16; j++) {
-			bitset<8> tmp_byte;
-			for (int k = j * 8; k < (j + 1) * 8; k++) {
-				if (omega_tmp[k] == 1)   //omega_tmp
-					tmp_byte.set(k % 8);
-			}
-			w_tmp.key[j] = tmp_byte.to_ulong();
-			//w[i].key[j] = tmp.to_ulong();
-		}
-		w_tmp.corr = calc_corr_SboxPre(w_tmp.key, trace_num, Data, HD_key, trace);
-		//w[i].corr = calc_corr_SboxPre(w[i].key, trace_num, Data, HW_key, trace);
-
-		/*double r_compare = (double)rand() / (double)RAND_MAX;
-
-		if (((double)iter_num / (double)evolution_max) <= 0.8) {   //进化前期
-			if (w[i].corr < w_tmp.corr && r_compare < 0.8) {
-				memcpy(w[i].key, w_tmp.key, 16);
-				w[i].corr = w_tmp.corr;
-			}
-		}
-		else {   //进化后期
-			if (r_compare < 0.8) {
-				memcpy(w[i].key, w_tmp.key, 16);
-				w[i].corr = w_tmp.corr;
-			}
-		}*/
-
-		if (w[i].corr > w_tmp.corr) {
-			memcpy(w[i].key, w_tmp.key, 16);
-			w[i].corr = w_tmp.corr;
-		}
-
-	}
-	sort(w + 1, w + 1 + pn);
-	reduce_duplication(w, pn, evolution_max, iter_num, trace_num, Data, HD_key, trace, para_dup);
-}
 
 void precise_search(node best, node w_precise[], int pn, int trace_num, PlainData Data[], int HD_key[], double trace[][maxn]) {
 	bitset<128> best_bit;
-	//printf("----------------------------------------test precise_search-----------------------------------------\n");
 	for (int i = 0; i < 16; i++) {
 		bitset<8> tmp(best.key[i]);
 		//cout << tmp << endl;
@@ -719,7 +547,6 @@ void precise_search(node best, node w_precise[], int pn, int trace_num, PlainDat
 					tmp_byte.set(k % 8);
 			}
 			w_precise[i + 1].key[j] = tmp_byte.to_ulong();
-			//w[i].key[j] = tmp.to_ulong();
 		}
 		w_precise[i + 1].corr = calc_corr_SboxPre(w_precise[i + 1].key, trace_num, Data, HD_key, trace);  //fitness function
 	}
@@ -744,6 +571,4 @@ void work_bGWO(int trace_num, node w[], PlainData Data[], int HD_key[], double t
 	para_2.C = 0;
 
 	update_omega(w, pn, para, evolution_max, iter_num, trace_num, Data, HD_key, trace, para_dup);
-	//update_omega_second(w, pn, para_2, evolution_max, iter_num, trace_num, Data, HD_key, trace, para_dup);
-	//update_omega_third(w, pn, evolution_max, iter_num, trace_num, Data, HW_key, trace, para_dup);
 }
