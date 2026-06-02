@@ -8,15 +8,10 @@ This repository provides the official implementation of **BODIO**, a **Bit-Orien
 
 The associated paper has been published in *Applied Soft Computing*:
 
-| Item | Information |
-|---|---|
-| Title | **BODIO: A bit-oriented distance-iterated optimizer for key search with bitwise linear leakage** |
-| Authors | Ting Gao, Xuyang Chen, Yuanxing Liu, An Wang |
-| Journal | *Applied Soft Computing* |
-| Volume | 201 |
-| Year | 2026 |
-| Article number | 115531 |
-| DOI | [10.1016/j.asoc.2026.115531](https://doi.org/10.1016/j.asoc.2026.115531) |
+> **BODIO: A bit-oriented distance-iterated optimizer for key search with bitwise linear leakage** <br>
+> Ting Gao, Xuyang Chen, Yuanxing Liu, An Wang<br>
+> *Applied Soft Computing*, Volume 201, 2026, Article 115531<br>
+> DOI: [10.1016/j.asoc.2026.115531](https://doi.org/10.1016/j.asoc.2026.115531)
 
 Official Elsevier Share Link:
 https://authors.elsevier.com/a/1nB4F5aecT0-B6
