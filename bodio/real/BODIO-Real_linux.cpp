@@ -6,21 +6,9 @@ void bGWO(unsigned char* key, int trace_num, string start, int pn, int evolution
 	int k, k_2 = 0;
 
 	int start_trace_set[200 + 5];
-	FILE* fp_crt; //ChooseRandomTraces
-	fp_crt = fopen("./ChooseRandomTraces.csv", "r");
-	int skip_round = trace_num / 50 - 1;
-	for (int i = 1; i <= skip_round; i++) {
-		for (int j = 1; j <= experiment_max; j++) {
-			int tmp;
-			fscanf(fp_crt, "%d", &tmp);
-			fscanf(fp_crt, ",");
-		}
-	}
-	for (int i = 1; i <= experiment_max; i++) {
-		fscanf(fp_crt, "%d", &start_trace_set[i]);
-		fscanf(fp_crt, ",");
-	}
-	fclose(fp_crt);
+	'''
+	Choose random power traces data in your own dataset.
+	'''
 
 	vector<double> runtimes(experiment_max);
 
@@ -31,7 +19,7 @@ void bGWO(unsigned char* key, int trace_num, string start, int pn, int evolution
 
 	node w[max_I], w_precise[128 + 1];
 	PlainData Data[maxn];
-	double trace[1][maxn];//trace[x][y]在第y个波形里  第x个点的值
+	double trace[1][maxn];
 	int HD_key[maxn];
 
 	for (k = 1; k <= experiment_max; k++) {   
@@ -62,10 +50,6 @@ void bGWO(unsigned char* key, int trace_num, string start, int pn, int evolution
 
 			work_bGWO(trace_num, w, Data, HD_key, trace, pn, evolution_max, i);
 
-			//printf("%d ", i);
-
-			//枚举使用
-
 			if (i >= 2 && memcmp(w[1].key, alpha.key, 16) == 0) {
 				flag++;
 			}
@@ -79,15 +63,11 @@ void bGWO(unsigned char* key, int trace_num, string start, int pn, int evolution
 		}
 		memcpy(key, alpha.key, 16);
 
-
-		//枚举
-
 		int j = 1;
 
 		if (flag == flag_num) {
 			k_2 = k_2 + 1;
 			for (j = 1; memcmp(alpha.key, Data[1].key, 16) && memcmp(beta.key, Data[1].key, 16) && memcmp(delta.key, Data[1].key, 16) && j <= 10; j++) {
-				//printf("%d ", j);
 				precise_search(alpha, w_precise, pn, trace_num, Data, HD_key, trace);
 
 				memcpy(alpha.key, w_precise[1].key, 16);
@@ -181,7 +161,7 @@ int main() {
 
 		for (int i = trace_number_min; i <= trace_number_max; i += trace_number_step) {
 
-			const int n = i;////n表示生成的波形数量，读取n次加密结果
+			const int n = i;
 			unsigned char best_key[16];
 			printf("Trace number is %d\n", n);
 
