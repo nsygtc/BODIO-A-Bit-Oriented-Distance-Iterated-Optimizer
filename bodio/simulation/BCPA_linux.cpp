@@ -1,12 +1,3 @@
-﻿/*
-1）          C语言中六种位运算符：
-&按位与   |按位或   ^按位异或    ~取反    <<左移    >>右移
-
-2）BasicGACPASimul.cpp
-基础的GA-CPA仿真实验，通过仿真波形来进行实验。
-泄漏点在第一轮S盒之后。
-最优结果：波形条数1300，种群大小300，变异率0.01，成功率100%
-*/
 #include<bits/stdc++.h>
 #include <random>  
 #include <iostream>
@@ -25,7 +16,7 @@ typedef pair<LL, LL>pLL;
 
 const int maxn = 1000 + 5;
 const int max_I = 2e4 + 5;
-const double Pc = 0.9, Pm = 0.07, Pggap = 0.1;   //Pc为交叉率  Pm为突变率，调整到0.03则在种群1000，波形1300时不会收敛 0.02则收敛变慢
+const double Pc = 0.9, Pm = 0.07, Pggap = 0.1;  
 
 
 double trace[1][maxn];//trace[x][y]在第y个波形里  第x个点的值
@@ -599,39 +590,7 @@ void GA(unsigned char* key, int trace_num, int pn, int evolution_max, int pn_tou
 
 		printf("第%d次实验的代数为：%d\n", k, i - 1);
 
-//枚举
-/*		int j = 1;
 
-		if (flag == flag_num) {
-			k_2 = k_2 + 1;
-			for (j = 1; memcmp(best.key, Data[1].key, 16) && j <= 10; j++) {
-				//printf("%d ", j);
-				precise_search(best, w_precise, pn, trace_num, Data, HW_key, trace);
-				//printf("%lf  %lf  %lf  %lf  ", w_precise[1].corr, w_precise[2].corr, w_precise[3].corr, w_precise[4].corr);
-				//best = min(best, w_precise[1]);
-				//memcpy(best.key, w_precise[1].key, 16);
-				//best.corr = calc_corr_SboxPre(best.key, trace_num, Data, HW_key, trace);
-
-				memcpy(best.key, w_precise[1].key, 16);
-				for (int j = 0; j < 16; j++) {
-					printf("%02X", alpha.key[j]);  //%02X输出为16进制数
-				}
-				//printf(" %d\n", dis(alpha.key, Data[1].key));//比较正确密钥和当前密钥x.key差几比特
-				//fprintf(fp, "%d,%d\n", j + (i - 1), (128 - dis(best.key, Data[1].key)));
-			}
-
-			if (j == 10 + 1) {
-				//fprintf(fp, "fail\n");
-				fail_num++;
-				count_fail += i - 1;
-			}
-			else {
-				count += i - 1;
-				count_2 += j - 1;
-				//fprintf(fp, "success\n");
-			}
-		}
-		printf("第%d次实验的代数为：%d + %d\n", k, i - 1, j - 1);*/
 	}
 
 	//计算runtime均值和标准差
@@ -659,19 +618,6 @@ void GA(unsigned char* key, int trace_num, int pn, int evolution_max, int pn_tou
 	fprintf(fp1, "\n");
 
 	
-	//fprintf(fp, "Success Number,%d,Average Evolution Generation,%f,computation_fitness,%d,computation_sort,%d\n", (k - 1) - fail_num, (double)(count + evolution_max * fail_num) / (double)(k - 1),  computation_fitness, computation_sort);
-	
-	//printf("实验成功次数为：%d, 平均进化代数为：%f， computation_fitness为：%d，computation_sort为：%d\n", (k - 1) - fail_num,  (double)(count + count_fail) / (double)(k - 1),  computation_fitness, computation_sort);  //输出平均代数
-	//fprintf(fp, "Success Number,%d,Average Evolution Generation,%f,computation_fitness,%d,computation_sort,%d\n", (k - 1) - fail_num,  (double)(count + count_fail) / (double)(k - 1),  computation_fitness, computation_sort);
-
-	//枚举
-	//printf("实验成功次数为：%d, k_2次数：%d，平均进化代数为：%f + %f，实验运行时间：%f\n", (k - 1) - fail_num, k_2, (double)(count + count_fail) / (double)(k - 1), (double)(count_2 + 10 * fail_num) / (double)(k_2), timeuse);  //输出平均代数
-	//fprintf(fp, "Success Number,%d,k_2,%d,Average Evolution Generation,%f,%f,Process Time,%f\n", (k - 1) - fail_num, k_2, (double)(count + count_fail) / (double)(k - 1), (double)(count_2 + 10 * fail_num) / (double)(k_2), timeuse);
-
-	//fclose(fp);
-	
-	//fprintf(fp1, "%d,%f,%f,%d,%d\n", trace_num, result / experiment_max, (double)(count + count_fail) / (double)(k - 1), computation_fitness, computation_sort);
-	//fprintf(fp1, "%d,%f,%f,%f,%f\n", trace_num, result / (double)experiment_max, (double)(count + count_fail) / (double)(k - 1), (double)(count_2 + 10 * fail_num) / (double)(k_2), timeuse);
 	
 
 	printf("实验成功次数为：%d, 平均进化代数为：%f，实验运行时间：%f\n", (int)success_num, (double)(count + evolution_max * fail_num) / (double)(k - 1), total_runtime);
@@ -685,29 +631,6 @@ int main() {
 	string start = currentTimetoStr();
 	srand((unsigned)time(NULL));
 	int trace_number_min = 50, trace_number_max = 1000, trace_number_step = 50, pn = 20, pn_tournament = 16, evolution_max, experiment_max = 200;
-/*
-	for(int k = 0; k < 1; k++){
-		pn = 20;
-		pn_tournament = 16;
-		//unsigned char best_key[16];
-		//GA(best_key, 1000, start, pn, evolution_max);
-		
-		for (int i = trace_number_min; i <= trace_number_max; i += trace_number_step) {
-
-			const int n = i;////n表示生成的波形数量，读取n次加密结果
-			unsigned char best_key[16];
-			printf("Trace number is %d\n", n);
-
-			th[(i / trace_number_step) - 1] = thread(GA, best_key, n, start, pn, evolution_max, pn_tournament);
-
-		}
-
-		for(int i = 0; i < trace_number_max / trace_number_step; i++){
-			th[i].join();
-		}
-
-	}*/
-
 
 	for (int k = 0; k < 3; k++) {
 		evolution_max = evolution_set[k];
@@ -746,10 +669,7 @@ int main() {
 		}
 
 		fclose(fp1);
-/*
-		for (int i = 0; i < 1; i++) {
-			th[0].join();
-		}*/
+
 	}
 
 	printf("--------------Experiments End---------------\n");
